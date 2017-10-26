@@ -1,4 +1,7 @@
 defmodule PlatformWeb.RoomChannel do
+  @moduledoc """
+  The RoomChannel for socket communitcation in the context of a room
+  """
   use PlatformWeb, :channel
 
   def join("room:lobby", _payload, socket) do

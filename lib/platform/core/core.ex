@@ -6,11 +6,10 @@ defmodule Platform.Core do
   alias Platform.Core.Schema.Room
 
   @rooms [
-    %Room{name: "Sofaecke", uuid: "6A0466FA-38DD-45D9-B75B-8476D2F81F07" },
-    %Room{name: "Coffee-Lounge", uuid: "E9074C0A-FD2F-4778-A0D3-69E5A7201AD3" },
-    %Room{name: "Work", uuid: "AF4DC071-7920-409A-99C7-0DB0649EE0AA" }
+    %Room{name: "Sofaecke", uuid: "6A0466FA-38DD-45D9-B75B-8476D2F81F07"},
+    %Room{name: "Coffee-Lounge", uuid: "E9074C0A-FD2F-4778-A0D3-69E5A7201AD3"},
+    %Room{name: "Work", uuid: "AF4DC071-7920-409A-99C7-0DB0649EE0AA"}
   ]
-
 
   @doc """
   Get the list of rooms
@@ -40,7 +39,7 @@ defmodule Platform.Core do
   """
   def get_room!(id) do
     @rooms
-    |> Enum.find(fn(room) -> room.uuid == id end )
+    |> Enum.find(fn(room) -> room.uuid == id end)
   end
 
 end

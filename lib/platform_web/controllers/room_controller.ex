@@ -2,7 +2,6 @@ defmodule PlatformWeb.RoomController do
   use PlatformWeb, :controller
 
   alias Platform.Core
-  alias Platform.Core.Schema.Room
 
   def index(conn, _params) do
     rooms = Core.list_rooms()

@@ -1,5 +1,10 @@
 defmodule Platform.Application do
+  @moduledoc """
+  The Application context
+  """
   use Application
+
+  alias PlatformWeb.Endpoint
 
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
@@ -9,9 +14,7 @@ defmodule Platform.Application do
     # Define workers and child supervisors to be supervised
     children = [
       # Start the endpoint when the application starts
-      supervisor(PlatformWeb.Endpoint, []),
-      # Start your own worker by calling: Platform.Worker.start_link(arg1, arg2, arg3)
-      # worker(Platform.Worker, [arg1, arg2, arg3]),
+      supervisor(PlatformWeb.Endpoint, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -23,7 +26,7 @@ defmodule Platform.Application do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    PlatformWeb.Endpoint.config_change(changed, removed)
+    Endpoint.config_change(changed, removed)
     :ok
   end
 end
