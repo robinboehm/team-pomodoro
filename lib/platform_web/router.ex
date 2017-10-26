@@ -16,7 +16,7 @@ defmodule PlatformWeb.Router do
   scope "/", PlatformWeb do
     pipe_through :browser # Use the default browser stack
 
-    get "/", RoomController, :index
+    get "/", PageController, :index
 
     resources "/rooms", RoomController
   end
