@@ -44,8 +44,10 @@ defmodule Platform.Mixfile do
 
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
-    ["s": ["phx.server"],
-     "t": ["test.watch"],
-     "credo": ["credo --strict"]
+    [
+      "s": ["phx.server"],
+      "t": ["test.watch"],
+      "credo": ["credo --strict"]
+    ]
   end
 end
