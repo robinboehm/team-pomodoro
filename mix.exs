@@ -39,7 +39,8 @@ defmodule Platform.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:mix_test_watch, "~> 0.3", only: :dev}
+      {:mix_test_watch, "~> 0.3", only: :dev},
+      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}
     ]
   end
 
