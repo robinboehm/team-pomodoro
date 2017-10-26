@@ -1,11 +1,11 @@
 defmodule PlatformWeb.RoomChannel do
   use PlatformWeb, :channel
 
-  def join("room:lobby", payload, socket) do
+  def join("room:lobby", _payload, socket) do
       {:ok, socket}
   end
 
-  def join("room:" <> room_id , payload, socket) do
+  def join("room:" <> _room_id , _payload, socket) do
     {:ok, socket}
   end
 
@@ -22,8 +22,4 @@ defmodule PlatformWeb.RoomChannel do
     {:noreply, socket}
   end
 
-  # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
-  end
 end
