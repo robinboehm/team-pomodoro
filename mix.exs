@@ -9,7 +9,8 @@ defmodule Platform.Mixfile do
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
-      deps: deps()
+      deps: deps(),
+      aliases: aliases(),
     ]
   end
 
@@ -39,5 +40,12 @@ defmodule Platform.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"}
     ]
+  end
+
+  # See the documentation for `Mix` for more info on aliases.
+  defp aliases do
+    ["s": ["phx.server"],
+     "t": ["test.watch"],
+     "credo": ["credo --strict"]
   end
 end
