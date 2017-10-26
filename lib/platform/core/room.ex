@@ -1,6 +1,6 @@
 defmodule Platform.Core.Room do
-  alias Platform.Core.Room
 
+  @derive {Phoenix.Param, key: :uuid}
   defstruct [
     :name,
     :uuid
