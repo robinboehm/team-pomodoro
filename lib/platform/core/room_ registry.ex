@@ -42,26 +42,55 @@ defmodule Platform.Core.RoomRegistry do
 
   """
   def init(:ok) do
-    {:ok, %{}}
+    # name -> pid
+    names = %{}
+    # ref -> name
+    refs  = %{}
+    {:ok, {names, refs}}
   end
 
   @doc """
   Lookup for a RoomAgent instance.
   If there is no instance -> :error (via Map.fetch)
   """
-  def handle_call({:lookup, name}, _from, names) do
-    {:reply, Map.fetch(names, name), names}
+  def handle_call({:lookup, name}, _from, {names, _} = state) do
+    # Sascha: handle_call is synchron and return {:reply, result, state}
+    {:reply, Map.fetch(names, name), state}
   end
 
   @doc """
   Create or get a new RoomAgent instance
   """
-  def handle_call({:create, name}, _from, names) do
+  def handle_call({:create, name}, _from, {names, refs} = state) do
     if Map.has_key?(names, name) do
-      {:reply, Map.get(names, name), names}
+      {:reply, Map.get(names, name), state}
     else
-      {:ok, room} = RoomAgent.start_link([])
-      {:reply, room, Map.put(names, name, room)}
+      {:ok, pid} = RoomAgent.start_link([])
+      ref = Process.monitor(pid)
+      refs = Map.put(refs, ref, name)
+      names = Map.put(names, name, pid)
+      {:reply, pid, {names, refs}}
     end
   end
+
+  @doc """
+  Handle crash of an RoomAgent -> Delete from list.
+
+  The Down-Event is triggered via Process.monitor(pid)
+  """
+  def handle_info({:DOWN, ref, :process, _pid, _reason}, {names, refs}) do
+    {name, refs} = Map.pop(refs, ref)
+    names = Map.delete(names, name)
+    # handle_info is async and don't expect a return,
+    # so only modify our state
+    {:noreply, {names, refs}}
+  end
+
+  @doc """
+  Discards any unknown message
+  """
+  def handle_info(_msg, state) do
+    {:noreply, state}
+  end
+
 end
