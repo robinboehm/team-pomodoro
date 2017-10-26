@@ -1,0 +1,24 @@
+<h2>Listing Rooms</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Uuid</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for room <- @rooms do %>
+    <tr>
+      <td><%= room.name %></td>
+      <td><%= room.uuid %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: room_path(@conn, :show, room), class: "btn btn-default btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
