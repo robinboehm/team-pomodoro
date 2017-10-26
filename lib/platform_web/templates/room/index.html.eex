@@ -12,12 +12,8 @@
   <tbody>
 <%= for room <- @rooms do %>
     <tr>
-      <td><%= room.name %></td>
+      <td><%= link room.name, to: room_path(@conn, :show, room) %></td>
       <td><%= room.uuid %></td>
-
-      <td class="text-right">
-        <span><%= link "Show", to: room_path(@conn, :show, room), class: "btn btn-default btn-xs" %></span>
-      </td>
     </tr>
 <% end %>
   </tbody>
