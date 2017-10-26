@@ -3,7 +3,7 @@ defmodule Platform.Core do
   The Core context.
   """
 
-  alias Platform.Core.Schema.Room
+  alias Platform.Core.Room
 
   @rooms [
     %Room{name: "Sofaecke", uuid: "6A0466FA-38DD-45D9-B75B-8476D2F81F07"},
