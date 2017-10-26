@@ -1,17 +1,12 @@
-<h2>Show Room</h2>
+<h2><%= @room.name %></h2>
+
+<div data-room-uuid="<%= @room.uuid %>"></div>
 
 <ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @room.name %>
-  </li>
-
   <li>
     <strong>Uuid:</strong>
     <%= @room.uuid %>
   </li>
-
 </ul>
 
 <span><%= link "Back", to: room_path(@conn, :index) %></span>
