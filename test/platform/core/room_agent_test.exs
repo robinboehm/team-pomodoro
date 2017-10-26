@@ -8,8 +8,14 @@ defmodule Platform.RoomAgentTest do
     %{room: room}
   end
 
+  describe "#init" do
+    test "should init the userlist with an empty list", %{room: room} do
+      assert RoomAgent.list_users(room) == []
+    end
+  end
+
   describe "add_user" do
-    test "adds a user to the current room", %{room: room} do
+    test "should add a user to the current room", %{room: room} do
       assert RoomAgent.list_users(room) == []
 
       RoomAgent.add_user(room, %{})
@@ -17,7 +23,7 @@ defmodule Platform.RoomAgentTest do
       assert RoomAgent.list_users(room) == [%{}]
     end
 
-    test "adds more than one user to the current room", %{room: room} do
+    test "should add more than one user to the current room", %{room: room} do
       assert RoomAgent.list_users(room) == []
 
       RoomAgent.add_user(room, %{})
