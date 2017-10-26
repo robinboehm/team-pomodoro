@@ -1,4 +1,4 @@
-defmodule Platform.Core.Room do
+defmodule Platform.Core.Schema.Room do
 
   @derive {Phoenix.Param, key: :uuid}
   defstruct [

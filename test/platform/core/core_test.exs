@@ -3,7 +3,7 @@ defmodule Platform.CoreTest do
 
   import Platform.Core
 
-  alias Platform.Core.Room
+  alias Platform.Core.Schema.Room
 
   doctest Platform.Core
 end
