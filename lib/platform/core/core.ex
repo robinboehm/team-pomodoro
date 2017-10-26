@@ -3,13 +3,12 @@ defmodule Platform.Core do
   The Core context.
   """
 
-  alias Platform.Repo
   alias Platform.Core.Room
 
   @rooms [
-    %{name: "Sofaecke", uuid: "6A0466FA-38DD-45D9-B75B-8476D2F81F07" },
-    %{name: "Coffee-Lounge", uuid: "E9074C0A-FD2F-4778-A0D3-69E5A7201AD3" },
-    %{name: "Work", uuid: "AF4DC071-7920-409A-99C7-0DB0649EE0AA" }
+    %Room{name: "Sofaecke", uuid: "6A0466FA-38DD-45D9-B75B-8476D2F81F07" },
+    %Room{name: "Coffee-Lounge", uuid: "E9074C0A-FD2F-4778-A0D3-69E5A7201AD3" },
+    %Room{name: "Work", uuid: "AF4DC071-7920-409A-99C7-0DB0649EE0AA" }
   ]
 
 
@@ -17,7 +16,7 @@ defmodule Platform.Core do
   Get the list of rooms
 
   iex> list_rooms()
-  [%{name: "Sofaecke", uuid: "6A0466FA-38DD-45D9-B75B-8476D2F81F07" }, %{name: "Coffee-Lounge", uuid: "E9074C0A-FD2F-4778-A0D3-69E5A7201AD3" }, %{name: "Work", uuid: "AF4DC071-7920-409A-99C7-0DB0649EE0AA" }]
+  [%Room{name: "Sofaecke", uuid: "6A0466FA-38DD-45D9-B75B-8476D2F81F07" }, %Room{name: "Coffee-Lounge", uuid: "E9074C0A-FD2F-4778-A0D3-69E5A7201AD3" }, %Room{name: "Work", uuid: "AF4DC071-7920-409A-99C7-0DB0649EE0AA" }]
 
   iex> length(list_rooms())
   3
@@ -30,10 +29,10 @@ defmodule Platform.Core do
   Get a specific room by id
 
   iex> get_room!("6A0466FA-38DD-45D9-B75B-8476D2F81F07")
-  %{name: "Sofaecke", uuid: "6A0466FA-38DD-45D9-B75B-8476D2F81F07" }
+  %Room{name: "Sofaecke", uuid: "6A0466FA-38DD-45D9-B75B-8476D2F81F07" }
 
   iex> get_room!("E9074C0A-FD2F-4778-A0D3-69E5A7201AD3")
-  %{name: "Coffee-Lounge", uuid: "E9074C0A-FD2F-4778-A0D3-69E5A7201AD3" }
+  %Room{name: "Coffee-Lounge", uuid: "E9074C0A-FD2F-4778-A0D3-69E5A7201AD3" }
 
   iex> get_room!("not_existing")
   nil
