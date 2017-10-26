@@ -14,10 +14,6 @@
     <tr>
       <td><%= room.name %></td>
       <td><%= room.uuid %></td>
-
-      <td class="text-right">
-        <span><%= link "Show", to: room_path(@conn, :show, room), class: "btn btn-default btn-xs" %></span>
-      </td>
     </tr>
 <% end %>
   </tbody>
