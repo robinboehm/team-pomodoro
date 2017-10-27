@@ -5,6 +5,7 @@ defmodule Platform.Core.Timer do
   use GenServer
 
   @default_time 25*60 # 25minutes pomodoro
+  @endpoint PlatformWeb.Endpoint # move this to a config option
 
   ## Client API
 
@@ -73,7 +74,7 @@ defmodule Platform.Core.Timer do
   def handle_cast({:reset}, {_running, _counter, name}) do
     running = false
     counter = @default_time
-    PlatformWeb.Endpoint.broadcast("room:#{name}", "counter", %{value: counter})
+    @endpoint.broadcast("room:#{name}", "counter", %{value: counter})
     {:noreply, {running, counter, name}}
   end
 
@@ -83,7 +84,7 @@ defmodule Platform.Core.Timer do
   end
   def handle_info(:tick, {true = running, counter, name}) do
     Process.send_after(self(), :tick, 1_000)
-    PlatformWeb.Endpoint.broadcast("room:#{name}", "counter", %{value: counter})
+    @endpoint.broadcast("room:#{name}", "counter", %{value: counter})
     {:noreply, {running, (counter-1), name}}
   end
   def handle_info(:tick, {false = running, counter, name}) do
