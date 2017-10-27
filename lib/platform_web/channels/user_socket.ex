@@ -7,8 +7,8 @@ defmodule PlatformWeb.UserSocket do
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
 
-  def connect(_params, socket) do
-    {:ok, socket}
+  def connect(%{"user" => user}, socket) do
+    {:ok, assign(socket, :user, user)}
   end
 
   def id(_socket), do: nil
