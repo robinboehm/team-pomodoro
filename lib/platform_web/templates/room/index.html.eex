@@ -1,6 +1,6 @@
 <h2>Listing Rooms</h2>
 
-<%= inspect Haikunator.build(0, " ") %>
+Hallo <%= @conn.cookies["user_name"] %>
 
 <table class="table">
   <thead>
