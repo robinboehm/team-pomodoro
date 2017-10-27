@@ -4,7 +4,8 @@ defmodule Platform.Core.RoomTimer do
   """
   use GenServer
 
-  @default_time 25*60 # 25minutes pomodoro
+  @default_time 25 * 60 # 25 minutes pomodoro
+  @endpoint PlatformWeb.Endpoint # move this to a config option
 
   ## Client API
 
@@ -16,23 +17,23 @@ defmodule Platform.Core.RoomTimer do
   end
 
   @doc """
-
+  Starts the timer
   """
-  def start() do
+  def start do
     GenServer.cast(__MODULE__, {:start})
   end
 
   @doc """
-
+  Stops the timer
   """
-  def stop() do
+  def stop do
     GenServer.cast(__MODULE__, {:stop})
   end
 
   @doc """
-
+  Resets the timer
   """
-  def reset() do
+  def reset do
     GenServer.cast(__MODULE__, {:reset})
   end
 
@@ -44,7 +45,6 @@ defmodule Platform.Core.RoomTimer do
   The AgentRooms will be stored here in following format:
 
   room.uuid : <PID>
-
   """
   def init(:ok) do
     counter = @default_time
@@ -69,7 +69,7 @@ defmodule Platform.Core.RoomTimer do
 
   def handle_cast({:reset}, {_state, _counter}) do
     counter = @default_time
-    PlatformWeb.Endpoint.broadcast("room:6A0466FA-38DD-45D9-B75B-8476D2F81F07", "counter", %{value: counter})
+    @endpoint.broadcast("room:6A0466FA-38DD-45D9-B75B-8476D2F81F07", "counter", %{value: counter})
     {:noreply, {:paused, counter}}
   end
 
@@ -78,7 +78,7 @@ defmodule Platform.Core.RoomTimer do
   end
   def handle_info(:tick, {:running, counter}) do
     Process.send_after(self(), :tick, 1_000)
-    PlatformWeb.Endpoint.broadcast("room:6A0466FA-38DD-45D9-B75B-8476D2F81F07", "counter", %{value: counter})
+    @endpoint.broadcast("room:6A0466FA-38DD-45D9-B75B-8476D2F81F07", "counter", %{value: counter})
     {:noreply, {:running, counter - 1}}
   end
   def handle_info(:tick, {:paused, counter}) do

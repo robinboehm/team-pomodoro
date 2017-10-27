@@ -5,6 +5,7 @@ defmodule PlatformWeb.RoomChannel do
   use PlatformWeb, :channel
 
   alias Platform.Presence
+  alias Platform.Core.RoomTimer
 
   def join("room:lobby", _payload, socket) do
       {:ok, socket}
@@ -16,7 +17,6 @@ defmodule PlatformWeb.RoomChannel do
   end
 
   def handle_info(:after_join, socket) do
-    IO.inspect socket.topic
     push socket, "presence_state", Presence.list(socket)
     {:ok, _} = Presence.track(socket, socket.assigns.name, %{
       online_at: inspect(System.system_time(:seconds))
@@ -34,19 +34,19 @@ defmodule PlatformWeb.RoomChannel do
   # broadcast to everyone in the current topic (room:lobby).
   def handle_in("start", payload, socket) do
     # broadcast socket, "shout", payload
-    Platform.Core.RoomTimer.start()
+    RoomTimer.start()
     {:noreply, socket}
   end
 
   def handle_in("stop", payload, socket) do
     # broadcast socket, "shout", payload
-    Platform.Core.RoomTimer.stop()
+    RoomTimer.stop()
     {:noreply, socket}
   end
 
   def handle_in("reset", payload, socket) do
     # broadcast socket, "shout", payload
-    Platform.Core.RoomTimer.reset()
+    RoomTimer.reset()
     {:noreply, socket}
   end
 end
