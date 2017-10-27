@@ -1,6 +1,6 @@
 defmodule Platform.Core.Timer do
   @moduledoc """
-  A registry for room-agents
+  A registry for timer-agents
   """
   use GenServer
 
@@ -12,7 +12,7 @@ defmodule Platform.Core.Timer do
   @doc """
   Starts the registry.
   """
-  def start_link([room_id: name] = opts) do
+  def start_link([timer_id: name] = opts) do
     GenServer.start_link(__MODULE__, name, opts)
   end
 
@@ -20,21 +20,28 @@ defmodule Platform.Core.Timer do
 
   """
   def start(timer) do
-    GenServer.cast(timer, {:start})
+    GenServer.cast(timer, :start)
   end
 
   @doc """
 
   """
   def stop(timer) do
-    GenServer.cast(timer, {:stop})
+    GenServer.cast(timer, :stop)
   end
 
   @doc """
 
   """
   def reset(timer) do
-    GenServer.cast(timer, {:reset})
+    GenServer.cast(timer, :reset)
+  end
+
+  @doc """
+
+  """
+  def info(timer) do
+    GenServer.call(timer, :info)
   end
 
   ## Server Callbacks
@@ -42,7 +49,7 @@ defmodule Platform.Core.Timer do
   @doc """
   Initialize the registry with an empty list.
 
-  The AgentRooms will be stored here in following format:
+  The Agenttimers will be stored here in following format:
 
   name : <PID>
 
@@ -55,23 +62,23 @@ defmodule Platform.Core.Timer do
 
   @doc """
   """
-  def handle_cast({:start}, {false = _running, counter, name}) do
+  def handle_cast(:start, {false = _running, counter, name}) do
     # Start the timer
     Process.send_after(self(), :tick, 1_000)
 
     running = true
     {:noreply, {running, (counter-1), name}}
   end
-  def handle_cast({:start}, {running, counter, name}) do
+  def handle_cast(:start, {running, counter, name}) do
     {:noreply, {running, counter, name}}
   end
 
-  def handle_cast({:stop}, {_running, counter, name}) do
+  def handle_cast(:stop, {_running, counter, name}) do
     running = false
     {:noreply, {running, counter, name}}
   end
 
-  def handle_cast({:reset}, {_running, _counter, name}) do
+  def handle_cast(:reset, {_running, _counter, name}) do
     running = false
     counter = @default_time
     @endpoint.broadcast("room:#{name}", "counter", %{value: counter})
@@ -89,5 +96,9 @@ defmodule Platform.Core.Timer do
   end
   def handle_info(:tick, {false = running, counter, name}) do
     {:noreply, {running, counter, name}}
+  end
+
+  def handle_call(:info, _from, {running, counter, name}) do
+    {:reply, counter, {running, counter, name}}
   end
 end

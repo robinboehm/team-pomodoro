@@ -1,6 +1,6 @@
 defmodule Platform.Core.TimerRegistry do
   @moduledoc """
-  A registry for room-agents
+  A registry for timer-agents
   """
   use GenServer
 
@@ -16,16 +16,16 @@ defmodule Platform.Core.TimerRegistry do
   end
 
   @doc """
-  Looks up the room pid for `name` stored in `server`.
+  Looks up the timer pid for `name` stored in `server`.
 
-  Returns `{:ok, pid}` if the room exists, `:error` otherwise.
+  Returns `{:ok, pid}` if the timer exists, `:error` otherwise.
   """
   def lookup(name) do
     GenServer.call(__MODULE__, {:lookup, name})
   end
 
   @doc """
-  Ensures there is a room associated with the given `name` in `server`.
+  Ensures there is a timer associated with the given `name` in `server`.
   """
   def create_or_get(name) do
     GenServer.call(__MODULE__, {:create, name})
@@ -36,9 +36,9 @@ defmodule Platform.Core.TimerRegistry do
   @doc """
   Initialize the registry with an empty list.
 
-  The AgentRooms will be stored here in following format:
+  The Agenttimers will be stored here in following format:
 
-  room.uuid : <PID>
+  timer.uuid : <PID>
 
   """
   def init(:ok) do
@@ -65,7 +65,7 @@ defmodule Platform.Core.TimerRegistry do
     if Map.has_key?(names, name) do
       {:reply, Map.get(names, name), state}
     else
-      {:ok, pid} = Timer.start_link(room_id: name)
+      {:ok, pid} = Timer.start_link(timer_id: name)
       ref = Process.monitor(pid)
       refs = Map.put(refs, ref, name)
       names = Map.put(names, name, pid)
