@@ -17,3 +17,5 @@
 </ul>
 
 <span><%= link "Back", to: room_path(@conn, :index) %></span>
+
+<%= img_tag static_path(@conn, "/images/rooms/#{@room.image}"), class: "img-fluid" %>
