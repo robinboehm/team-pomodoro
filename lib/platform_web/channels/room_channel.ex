@@ -8,7 +8,7 @@ defmodule PlatformWeb.RoomChannel do
 
   def join("room:lobby", _payload, socket) do
     send(self(), :after_join_lobby)
-      {:ok, socket}
+    {:ok, assign(socket, :room_id, "lobby")}
   end
   def join("room:" <> room_id , _payload, socket) do
     send(self(), :after_join)
