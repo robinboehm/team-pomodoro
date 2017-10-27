@@ -19,6 +19,7 @@ defmodule PlatformWeb.Router do
 
     get "/", PageController, :index
 
+    resources "/user", UserController, singleton: true
     resources "/rooms", RoomController
   end
 

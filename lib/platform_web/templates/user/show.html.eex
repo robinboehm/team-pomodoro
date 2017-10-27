@@ -1,0 +1,9 @@
+Hello <%= @conn.cookies["user_name"] %>,
+
+you can change your name here:
+
+<%= form_tag(user_path(@conn, :update), [method: :put]) %>
+  <input name="user_name" value="<%= @conn.cookies["user_name"] %>" class="form-control">
+
+  <button class="btn btn-primary">Save</button>
+</form>
