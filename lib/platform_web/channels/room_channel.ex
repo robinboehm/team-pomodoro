@@ -4,10 +4,11 @@ defmodule PlatformWeb.RoomChannel do
   """
   use PlatformWeb, :channel
 
+  alias Platform.Presence
+
   def join("room:lobby", _payload, socket) do
       {:ok, socket}
   end
-
   def join("room:" <> _room_id , _payload, socket) do
     {:ok, socket}
   end
@@ -24,5 +25,4 @@ defmodule PlatformWeb.RoomChannel do
     broadcast socket, "shout", payload
     {:noreply, socket}
   end
-
 end
