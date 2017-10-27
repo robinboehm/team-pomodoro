@@ -3,6 +3,14 @@ import socket from "./socket"
 import {Presence} from "phoenix"
 
 
+$("[data-room-uuid]").each((index, element) => {
+  let roomUuid = $(element).data("room-uuid");
+  let channel = joinChannel(roomUuid);
+  trackPresence(channel);
+  createCounterEvents(channel);
+});
+
+
 function trackPresence(channel) {
   let presences = {} // client's initial empty presence state
 
@@ -25,13 +33,15 @@ function trackPresence(channel) {
     // receive initial presence data from server, sent after join
     channel.on("presence_state", state => {
       presences = Presence.syncState(presences, state, onJoin, onLeave)
-      console.log(Presence.list(presences))
+      $("#presence_users").text(Object.keys(presences).join(", "))
     })
     // receive "presence_diff" from server, containing join/leave events
     channel.on("presence_diff", diff => {
       presences = Presence.syncDiff(presences, diff, onJoin, onLeave)
-      console.log(presences)
+      $("#presence_users").text(Object.keys(presences).join(", "))
     })
+
+
 }
 
 
@@ -61,12 +71,6 @@ function createCounterEvents(channel) {
   });
 }
 
-$("[data-room-uuid]").each((index, element) => {
-  let roomUuid = $(element).data("room-uuid");
-  let channel = joinChannel(roomUuid);
-  trackPresence(channel);
-  createCounterEvents(channel);
-});
 
 
 

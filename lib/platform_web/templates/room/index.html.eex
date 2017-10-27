@@ -2,6 +2,9 @@
 
 Hallo <%= @conn.cookies["user_name"] %> (<%= link "Change name", to: user_path(@conn, :show) %>)
 <div data-room-uuid="lobby"></div>
+<div>
+  Current users in this room: <span id="presence_users"></span>
+</div>
 <table class="table">
   <thead>
     <tr>

@@ -9,6 +9,10 @@
 <button id="stop-counter">Stop</button>
 <button id="reset-counter">Reset</button>
 
+<div>
+    Current users in this room: <span id="presence_users"></span>
+</div>
+
 <ul>
   <li>
     <strong>Uuid:</strong>
