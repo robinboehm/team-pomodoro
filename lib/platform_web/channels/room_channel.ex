@@ -9,14 +9,15 @@ defmodule PlatformWeb.RoomChannel do
   def join("room:lobby", _payload, socket) do
       {:ok, socket}
   end
-  def join("room:" <> _room_id , _payload, socket) do
+
+  def join("room:" <> room_id , _payload, socket) do
     send(self(), :after_join)
-    {:ok, socket}
+    {:ok, assign(socket, :room_id, room_id)}
   end
 
   def handle_info(:after_join, socket) do
     push socket, "presence_state", Presence.list(socket)
-    {:ok, _} = Presence.track(socket, '1', %{
+    {:ok, _} = Presence.track(socket, socket.assigns.room_id, %{
       online_at: inspect(System.system_time(:seconds))
     })
     {:noreply, socket}
