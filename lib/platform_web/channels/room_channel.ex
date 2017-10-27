@@ -19,10 +19,18 @@ defmodule PlatformWeb.RoomChannel do
   end
 
   def handle_info(:after_join, socket) do
+
+    # Publish current list of presences
     push socket, "presence_state", Presence.list(socket)
     {:ok, _} = Presence.track(socket, socket.assigns.name, %{
       online_at: inspect(System.system_time(:seconds))
     })
+
+    # Publish current timer-value
+    timer = Platform.Core.TimerRegistry.create_or_get(socket.assigns.room_id)
+    counter = Platform.Core.Timer.info(timer)
+    push socket, "counter", %{value: counter}
+
     {:noreply, socket}
   end
 
