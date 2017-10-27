@@ -17,7 +17,7 @@ defmodule Platform.Core.RoomTimer do
 
   """
   def start() do
-    GenServer.call(__MODULE__, {:start})
+    GenServer.cast(__MODULE__, {:start})
   end
 
   ## Server Callbacks
@@ -39,7 +39,7 @@ defmodule Platform.Core.RoomTimer do
 
   @doc """
   """
-  def handle_cast({:start}, _from, {_, counter}) do
+  def handle_cast({:start}, {_, counter}) do
     # Start the timer
     Process.send_after(self(), :tick, 1_000)
 
@@ -47,7 +47,7 @@ defmodule Platform.Core.RoomTimer do
     {:noreply, {running, counter}}
   end
 
-  def handle_cast({:stop}, _from, {_, counter}) do
+  def handle_cast({:stop}, {_, counter}) do
     running = false
     {:noreply, {running, counter}}
   end
