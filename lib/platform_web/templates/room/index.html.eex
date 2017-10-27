@@ -3,21 +3,19 @@
 Hallo <%= @conn.cookies["user_name"] %> (<%= link "Change name", to: user_path(@conn, :show) %>)
 <div data-room-uuid="lobby"></div>
 <div>
-  Current users in this room: <span id="presence_users"></span>
+  Current users in the lobby: <span id="presence_users"></span>
 </div>
 <table class="table">
   <thead>
     <tr>
       <th>Name</th>
-      <th>Uuid</th>
-      <th></th>
+      <th>Users</th>
     </tr>
   </thead>
   <tbody>
 <%= for room <- @rooms do %>
     <tr>
       <td><%= link room.name, to: room_path(@conn, :show, room) %></td>
-      <td><%= room.uuid %></td>
       <td data-show-users-in-room="room:<%= room.uuid %>"><%= Map.keys Platform.Presence.list("room:#{room.uuid}") %></td>
     </tr>
 <% end %>
