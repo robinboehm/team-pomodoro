@@ -6,6 +6,8 @@
 <div id="counter"></div>
 
 <button id="start-counter">Start</button>
+<button id="stop-counter">Stop</button>
+<button id="reset-counter">Reset</button>
 
 <ul>
   <li>
