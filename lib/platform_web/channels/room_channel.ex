@@ -32,8 +32,9 @@ defmodule PlatformWeb.RoomChannel do
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (room:lobby).
-  def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
+  def handle_in("start", payload, socket) do
+    # broadcast socket, "shout", payload
+    Platform.Core.RoomTimer.start()
     {:noreply, socket}
   end
 end

@@ -5,6 +5,8 @@
 
 <div id="counter"></div>
 
+<button id="start-counter">Start</button>
+
 <ul>
   <li>
     <strong>Uuid:</strong>

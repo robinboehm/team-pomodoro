@@ -44,5 +44,9 @@ $("[data-room-uuid]").each((index, element) => {
       console.log(value)
       $("#counter").text(value);
     })
+
+    $("#start-counter").on("click", (event) => {
+      channel.push("start");
+    });
 });
 
