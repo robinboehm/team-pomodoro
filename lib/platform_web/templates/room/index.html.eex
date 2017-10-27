@@ -5,6 +5,7 @@
     <tr>
       <th>Name</th>
       <th>Uuid</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -12,6 +13,7 @@
     <tr>
       <td><%= link room.name, to: room_path(@conn, :show, room) %></td>
       <td><%= room.uuid %></td>
+      <th><%= inspect Platform.Presence.list("room:#{room.uuid}") %>
     </tr>
 <% end %>
   </tbody>
