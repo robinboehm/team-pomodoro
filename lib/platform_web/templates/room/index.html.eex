@@ -13,7 +13,7 @@
     <tr>
       <td><%= link room.name, to: room_path(@conn, :show, room) %></td>
       <td><%= room.uuid %></td>
-      <th><%= inspect Platform.Presence.list("room:#{room.uuid}") %>
+      <td><%= Map.keys Platform.Presence.list("room:#{room.uuid}") %></td>
     </tr>
 <% end %>
   </tbody>
