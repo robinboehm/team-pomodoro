@@ -54,11 +54,14 @@ defmodule Platform.Core.RoomTimer do
 
   @doc """
   """
-  def handle_cast({:start}, {_, counter}) do
+  def handle_cast({:start}, {false = _running, counter}) do
     # Start the timer
     Process.send_after(self(), :tick, 1_000)
 
     running = true
+    {:noreply, {running, counter}}
+  end
+  def handle_cast({:start}, {running, counter}) do
     {:noreply, {running, counter}}
   end
 
@@ -69,7 +72,9 @@ defmodule Platform.Core.RoomTimer do
 
   def handle_cast({:reset}, {_running, _counter}) do
     running = false
-    {:noreply, {running, @default_time}}
+    counter = @default_time
+    PlatformWeb.Endpoint.broadcast("room:6A0466FA-38DD-45D9-B75B-8476D2F81F07", "counter", %{value: counter})
+    {:noreply, {running, counter}}
   end
 
   def handle_info(:tick, {true = _running, 0 = counter}) do
