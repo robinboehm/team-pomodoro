@@ -16,6 +16,7 @@ defmodule PlatformWeb.RoomChannel do
   end
 
   def terminate(msg, socket) do
+    PlatformWeb.Endpoint.broadcast "room:lobby", "room_update:", %{room_id: socket.topic, data: Presence.list(socket)}
     IO.inspect "User left"
   end
 

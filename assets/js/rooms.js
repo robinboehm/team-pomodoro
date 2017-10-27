@@ -41,6 +41,12 @@ function trackPresence(channel) {
       $("#presence_users").text(Object.keys(presences).join(", "))
     })
 
+  // receive "presence_diff" from server, containing join/leave events
+  channel.on("room_update", diff => {
+    presences = Presence.syncDiff(presences, diff, onJoin, onLeave)
+    console.log(presences)
+  })
+
 
 }
 
