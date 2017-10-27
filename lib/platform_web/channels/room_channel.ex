@@ -37,4 +37,16 @@ defmodule PlatformWeb.RoomChannel do
     Platform.Core.RoomTimer.start()
     {:noreply, socket}
   end
+
+  def handle_in("stop", payload, socket) do
+    # broadcast socket, "shout", payload
+    Platform.Core.RoomTimer.stop()
+    {:noreply, socket}
+  end
+
+  def handle_in("reset", payload, socket) do
+    # broadcast socket, "shout", payload
+    Platform.Core.RoomTimer.reset()
+    {:noreply, socket}
+  end
 end
