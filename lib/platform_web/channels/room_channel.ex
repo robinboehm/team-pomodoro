@@ -20,8 +20,8 @@ defmodule PlatformWeb.RoomChannel do
   end
 
   def terminate(msg, socket) do
-    payload = %{room_id: socket.topic, data: Presence.list(socket)}
-    @endpoint.broadcast "room:lobby", "room_update:", payload
+    Presence.untrack(socket, socket.assigns.name)
+    socket |> update_state_in_lobby
   end
 
   def handle_info(:after_join_lobby, socket) do
@@ -35,6 +35,7 @@ defmodule PlatformWeb.RoomChannel do
     socket
     |> track_prensence
     |> receive_current_counter
+    |> update_state_in_lobby
 
     {:noreply, socket}
   end
@@ -45,6 +46,13 @@ defmodule PlatformWeb.RoomChannel do
     {:ok, _} = Presence.track(socket, socket.assigns.name, %{
       online_at: inspect(System.system_time(:seconds))
     })
+
+    socket
+  end
+
+  defp update_state_in_lobby(socket) do
+    payload = %{room_id: socket.topic, data: Presence.list(socket)}
+    @endpoint.broadcast "room:lobby", "room_update", payload
 
     socket
   end

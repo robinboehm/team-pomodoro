@@ -32,19 +32,23 @@ function trackPresence(channel) {
 
     // receive initial presence data from server, sent after join
     channel.on("presence_state", state => {
-      presences = Presence.syncState(presences, state, onJoin, onLeave)
+      presences = Presence.syncState(presences, state)
       $("#presence_users").text(Object.keys(presences).join(", "))
     })
     // receive "presence_diff" from server, containing join/leave events
     channel.on("presence_diff", diff => {
-      presences = Presence.syncDiff(presences, diff, onJoin, onLeave)
+      presences = Presence.syncDiff(presences, diff)
       $("#presence_users").text(Object.keys(presences).join(", "))
     })
 
   // receive "presence_diff" from server, containing join/leave events
-  channel.on("room_update", diff => {
-    presences = Presence.syncDiff(presences, diff, onJoin, onLeave)
-    console.log(presences)
+    channel.on("room_update", state => {
+      presences = Presence.syncState(presences, state.data, onJoin, onLeave)
+      let elem = $(`[data-show-users-in-room="${state.room_id}"]`).first().text(Object.keys(presences).join(", "));
+    //   presences = Presence.syncState(presences, state.data)
+    //  console.log("[data-show-users-in-room=\""+state.room_id+"\"]")
+    //
+
   })
 
 
