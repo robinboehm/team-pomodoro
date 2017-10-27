@@ -55,6 +55,8 @@ defmodule Platform.Core.RoomTimer do
   def handle_info(:tick, {true = running, counter}) do
     Process.send_after(self(), :tick, 1_000)
     IO.inspect counter
+
+    PlatformWeb.Endpoint.broadcast("room:6A0466FA-38DD-45D9-B75B-8476D2F81F07", "counter", %{value: counter})
     {:noreply, {running, (counter-1)}}
   end
   def handle_info(:tick, {false = running, counter}) do

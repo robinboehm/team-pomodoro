@@ -2,6 +2,9 @@
 
 <div data-room-uuid="<%= @room.uuid %>"></div>
 
+
+<div id="counter"></div>
+
 <ul>
   <li>
     <strong>Uuid:</strong>

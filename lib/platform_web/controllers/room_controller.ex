@@ -12,6 +12,7 @@ defmodule PlatformWeb.RoomController do
   def show(conn, %{"id" => id}) do
     room = Core.get_room!(id)
 
+    Platform.Core.RoomTimer.start()
     render(conn, "show.html", room: room)
   end
 end

@@ -39,5 +39,10 @@ $("[data-room-uuid]").each((index, element) => {
       presences = Presence.syncDiff(presences, diff, onJoin, onLeave)
       console.log(presences)
     })
+
+    channel.on("counter", ({value: value}) => {
+      console.log(value)
+      $("#counter").text(value);
+    })
 });
 
