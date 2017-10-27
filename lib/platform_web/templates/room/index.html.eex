@@ -1,7 +1,7 @@
 <h2>Listing Rooms</h2>
 
 Hallo <%= @conn.cookies["user_name"] %> (<%= link "Change name", to: user_path(@conn, :show) %>)
-
+<div data-room-uuid="lobby"></div>
 <table class="table">
   <thead>
     <tr>
@@ -15,7 +15,7 @@ Hallo <%= @conn.cookies["user_name"] %> (<%= link "Change name", to: user_path(@
     <tr>
       <td><%= link room.name, to: room_path(@conn, :show, room) %></td>
       <td><%= room.uuid %></td>
-      <td><%= Map.keys Platform.Presence.list("room:#{room.uuid}") %></td>
+      <td data-show-users-in-room="<%= #{room.uuid} %>"><%= Map.keys Platform.Presence.list("room:#{room.uuid}") %></td>
     </tr>
 <% end %>
   </tbody>

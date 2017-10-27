@@ -2,16 +2,9 @@ import $ from "jquery"
 import socket from "./socket"
 import {Presence} from "phoenix"
 
-$("[data-room-uuid]").each((index, element) => {
-  let roomUuid = $(element).data("room-uuid");
-  console.log(roomUuid)
 
+function trackPresence(channel) {
   let presences = {} // client's initial empty presence state
-
-  let channel = socket.channel(`room:${roomUuid}`, {})
-  channel.join()
-    .receive("ok", resp => { console.log("Joined room successfully", resp) })
-    .receive("error", resp => { console.log("Unable to join", resp) })
 
     let onJoin = (id, current, newPres) => {
       if(!current){
@@ -39,22 +32,41 @@ $("[data-room-uuid]").each((index, element) => {
       presences = Presence.syncDiff(presences, diff, onJoin, onLeave)
       console.log(presences)
     })
+}
 
-    channel.on("counter", ({value: value}) => {
-      console.log(value)
-      $("#counter").text(value);
-    })
 
-    $("#start-counter").on("click", (event) => {
-      channel.push("start");
-    });
+function joinChannel(roomUuid) {
+  let channel = socket.channel(`room:${roomUuid}`, {})
+  channel.join()
+    .receive("ok", resp => { console.log("Joined room successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
+  return channel;
+}
 
-    $("#stop-counter").on("click", (event) => {
-      channel.push("stop");
-    });
+function createCounterEvents(channel) {
+  channel.on("counter", ({value: value}) => {
+    $("#counter").text(value);
+  })
 
-    $("#reset-counter").on("click", (event) => {
-      channel.push("reset");
-    });
+  $("#start-counter").on("click", (event) => {
+    channel.push("start");
+  });
+
+  $("#stop-counter").on("click", (event) => {
+    channel.push("stop");
+  });
+
+  $("#reset-counter").on("click", (event) => {
+    channel.push("reset");
+  });
+}
+
+$("[data-room-uuid]").each((index, element) => {
+  let roomUuid = $(element).data("room-uuid");
+  let channel = joinChannel(roomUuid);
+  trackPresence(channel);
+  createCounterEvents(channel);
 });
+
+
 

@@ -7,6 +7,7 @@ defmodule PlatformWeb.RoomChannel do
   alias Platform.Presence
 
   def join("room:lobby", _payload, socket) do
+    send(self(), :after_join_lobby)
       {:ok, socket}
   end
   def join("room:" <> room_id , _payload, socket) do
@@ -18,20 +19,38 @@ defmodule PlatformWeb.RoomChannel do
     IO.inspect "User left"
   end
 
-  def handle_info(:after_join, socket) do
+  def handle_info(:after_join_lobby, socket) do
+    socket
+    |> track_prensence
 
+    {:noreply, socket}
+  end
+
+  def handle_info(:after_join, socket) do
+    socket
+    |> track_prensence
+    |> receive_current_counter
+
+    {:noreply, socket}
+  end
+
+  defp track_prensence(socket) do
     # Publish current list of presences
     push socket, "presence_state", Presence.list(socket)
     {:ok, _} = Presence.track(socket, socket.assigns.name, %{
       online_at: inspect(System.system_time(:seconds))
     })
 
+    socket
+  end
+
+  defp receive_current_counter(socket) do
     # Publish current timer-value
     timer = Platform.Core.TimerRegistry.create_or_get(socket.assigns.room_id)
     counter = Platform.Core.Timer.info(timer)
     push socket, "counter", %{value: counter}
 
-    {:noreply, socket}
+    socket
   end
 
   # Channels can be used in a request/response fashion
