@@ -36,21 +36,21 @@ defmodule PlatformWeb.RoomChannel do
   # broadcast to everyone in the current topic (room:lobby).
   def handle_in("start", payload, socket) do
     # broadcast socket, "shout", payload
-    timer = Platform.Core.TimerRegistry.create(socket.assigns.room_id)
+    timer = Platform.Core.TimerRegistry.create_or_get(socket.assigns.room_id)
     Platform.Core.Timer.start(timer)
     {:noreply, socket}
   end
 
   def handle_in("stop", payload, socket) do
     # broadcast socket, "shout", payload
-    timer = Platform.Core.TimerRegistry.create(socket.assigns.room_id)
+    timer = Platform.Core.TimerRegistry.create_or_get(socket.assigns.room_id)
     Platform.Core.Timer.stop(timer)
     {:noreply, socket}
   end
 
   def handle_in("reset", payload, socket) do
     # broadcast socket, "shout", payload
-    timer = Platform.Core.TimerRegistry.create(socket.assigns.room_id)
+    timer = Platform.Core.TimerRegistry.create_or_get(socket.assigns.room_id)
     Platform.Core.Timer.reset(timer)
     {:noreply, socket}
   end

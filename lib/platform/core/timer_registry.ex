@@ -27,7 +27,7 @@ defmodule Platform.Core.TimerRegistry do
   @doc """
   Ensures there is a room associated with the given `name` in `server`.
   """
-  def create(name) do
+  def create_or_get(name) do
     GenServer.call(__MODULE__, {:create, name})
   end
 
