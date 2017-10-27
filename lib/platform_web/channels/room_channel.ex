@@ -10,7 +10,16 @@ defmodule PlatformWeb.RoomChannel do
       {:ok, socket}
   end
   def join("room:" <> _room_id , _payload, socket) do
+    send(self(), :after_join)
     {:ok, socket}
+  end
+
+  def handle_info(:after_join, socket) do
+    push socket, "presence_state", Presence.list(socket)
+    {:ok, _} = Presence.track(socket, '1', %{
+      online_at: inspect(System.system_time(:seconds))
+    })
+    {:noreply, socket}
   end
 
   # Channels can be used in a request/response fashion
