@@ -47,46 +47,41 @@ defmodule Platform.Core.RoomTimer do
 
   """
   def init(:ok) do
-    running = false
     counter = @default_time
-    {:ok, {running, counter}}
+    {:ok, {:paused, counter}}
   end
 
   @doc """
   """
-  def handle_cast({:start}, {false = _running, counter}) do
+  def handle_cast({:start}, {:paused, counter}) do
     # Start the timer
     Process.send_after(self(), :tick, 1_000)
 
-    running = true
-    {:noreply, {running, counter}}
+    {:noreply, {:running, counter}}
   end
-  def handle_cast({:start}, {running, counter}) do
-    {:noreply, {running, counter}}
-  end
-
-  def handle_cast({:stop}, {_running, counter}) do
-    running = false
-    {:noreply, {running, counter}}
+  def handle_cast({:start}, {:running, counter}) do
+    {:noreply, {:running, counter}}
   end
 
-  def handle_cast({:reset}, {_running, _counter}) do
-    running = false
+  def handle_cast({:stop}, {_state, counter}) do
+    {:noreply, {:paused, counter}}
+  end
+
+  def handle_cast({:reset}, {_state, _counter}) do
     counter = @default_time
     PlatformWeb.Endpoint.broadcast("room:6A0466FA-38DD-45D9-B75B-8476D2F81F07", "counter", %{value: counter})
-    {:noreply, {running, counter}}
+    {:noreply, {:paused, counter}}
   end
 
-  def handle_info(:tick, {true = _running, 0 = counter}) do
-    running = false
-    {:noreply, {running, counter}}
+  def handle_info(:tick, {:running, 0 = counter}) do
+    {:noreply, {:paused, counter}}
   end
-  def handle_info(:tick, {true = running, counter}) do
+  def handle_info(:tick, {:running, counter}) do
     Process.send_after(self(), :tick, 1_000)
     PlatformWeb.Endpoint.broadcast("room:6A0466FA-38DD-45D9-B75B-8476D2F81F07", "counter", %{value: counter})
-    {:noreply, {running, (counter-1)}}
+    {:noreply, {:running, counter - 1}}
   end
-  def handle_info(:tick, {false = running, counter}) do
-    {:noreply, {running, counter}}
+  def handle_info(:tick, {:paused, counter}) do
+    {:noreply, {:paused, counter}}
   end
 end
