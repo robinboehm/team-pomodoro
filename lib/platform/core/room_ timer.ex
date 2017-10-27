@@ -62,7 +62,12 @@ defmodule Platform.Core.RoomTimer do
     {:noreply, {running, counter}}
   end
 
-  def handle_cast({:stop}, {_running, _counter}) do
+  def handle_cast({:stop}, {_running, counter}) do
+    running = false
+    {:noreply, {running, counter}}
+  end
+
+  def handle_cast({:reset}, {_running, _counter}) do
     running = false
     {:noreply, {running, @default_time}}
   end
