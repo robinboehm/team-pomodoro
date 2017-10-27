@@ -1,5 +1,7 @@
 <h2>Listing Rooms</h2>
 
+<%= inspect Haikunator.build(0, " ") %>
+
 <table class="table">
   <thead>
     <tr>

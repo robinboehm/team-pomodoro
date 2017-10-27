@@ -10,10 +10,13 @@ defmodule PlatformWeb.RoomChannel do
   def join("room:lobby", _payload, socket) do
       {:ok, socket}
   end
-
   def join("room:" <> room_id , _payload, socket) do
     send(self(), :after_join)
     {:ok, assign(socket, :room_id, room_id)}
+  end
+
+  def terminate(msg, socket) do
+    IO.inspect "User left"
   end
 
   def handle_info(:after_join, socket) do
