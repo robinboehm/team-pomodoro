@@ -1,10 +1,10 @@
-defmodule Platform.Core.RoomRegistry do
+defmodule Platform.Core.TimerRegistry do
   @moduledoc """
   A registry for room-agents
   """
   use GenServer
 
-  alias Platform.Core.RoomAgent
+  alias Platform.Core.Timer
 
   ## Client API
 
@@ -12,7 +12,7 @@ defmodule Platform.Core.RoomRegistry do
   Starts the registry.
   """
   def start_link(opts) do
-    GenServer.start_link(__MODULE__, :ok, opts)
+    GenServer.start_link(__MODULE__, :ok, [name: __MODULE__])
   end
 
   @doc """
@@ -20,15 +20,15 @@ defmodule Platform.Core.RoomRegistry do
 
   Returns `{:ok, pid}` if the room exists, `:error` otherwise.
   """
-  def lookup(server, name) do
-    GenServer.call(server, {:lookup, name})
+  def lookup(name) do
+    GenServer.call(__MODULE__, {:lookup, name})
   end
 
   @doc """
   Ensures there is a room associated with the given `name` in `server`.
   """
-  def create(server, name) do
-    GenServer.call(server, {:create, name})
+  def create(name) do
+    GenServer.call(__MODULE__, {:create, name})
   end
 
   ## Server Callbacks
@@ -50,7 +50,7 @@ defmodule Platform.Core.RoomRegistry do
   end
 
   @doc """
-  Lookup for a RoomAgent instance.
+  Lookup for a Timer instance.
   If there is no instance -> :error (via Map.fetch)
   """
   def handle_call({:lookup, name}, _from, {names, _} = state) do
@@ -59,13 +59,13 @@ defmodule Platform.Core.RoomRegistry do
   end
 
   @doc """
-  Create or get a new RoomAgent instance
+  Create or get a new Timer instance
   """
   def handle_call({:create, name}, _from, {names, refs} = state) do
     if Map.has_key?(names, name) do
       {:reply, Map.get(names, name), state}
     else
-      {:ok, pid} = RoomAgent.start_link([])
+      {:ok, pid} = Timer.start_link(room_id: name)
       ref = Process.monitor(pid)
       refs = Map.put(refs, ref, name)
       names = Map.put(names, name, pid)
@@ -74,7 +74,7 @@ defmodule Platform.Core.RoomRegistry do
   end
 
   @doc """
-  Handle crash of an RoomAgent -> Delete from list.
+  Handle crash of an Timer -> Delete from list.
 
   The Down-Event is triggered via Process.monitor(pid)
   """

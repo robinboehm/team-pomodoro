@@ -16,7 +16,7 @@ defmodule Platform.Application do
       # Start the endpoint when the application starts
       supervisor(PlatformWeb.Endpoint, []),
       supervisor(Platform.Presence, []),
-      worker(Platform.Core.RoomTimer, [[]])
+      worker(Platform.Core.TimerRegistry, [[]])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
