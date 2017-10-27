@@ -8,7 +8,7 @@ defmodule PlatformWeb.RoomChannel do
   alias Platform.Core.TimerRegistry
   alias Platform.Core.Timer
 
-  @endpoint
+  @endpoint PlatformWeb.Endpoint # move this to a config option
 
   def join("room:lobby", _payload, socket) do
     send(self(), :after_join_lobby)
