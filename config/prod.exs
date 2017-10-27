@@ -15,8 +15,14 @@ use Mix.Config
 # which you typically run after static files are built.
 config :platform, PlatformWeb.Endpoint,
   load_from_system_env: true,
-  url: [host: "example.com", port: 80],
+  # url: [host: "example.com", port: 80],
+  url: [
+    scheme: get_env("PROJECT_URL_SCHEME") || "http",
+    host: get_env("PROJECT_URL_HOST") || "example.com",
+    port: get_env("PROJECT_URL_PORT") || get_env("PORT") || 80
+  ],
   cache_static_manifest: "priv/static/cache_manifest.json",
+  check_origin: false,
   secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 # Do not print debug messages in production
