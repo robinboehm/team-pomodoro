@@ -16,8 +16,9 @@ defmodule PlatformWeb.RoomChannel do
   end
 
   def handle_info(:after_join, socket) do
+    IO.inspect socket.topic
     push socket, "presence_state", Presence.list(socket)
-    {:ok, _} = Presence.track(socket, socket.assigns.room_id, %{
+    {:ok, _} = Presence.track(socket, socket.assigns.name, %{
       online_at: inspect(System.system_time(:seconds))
     })
     {:noreply, socket}
