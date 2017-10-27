@@ -14,7 +14,7 @@ defmodule PlatformWeb.UserNamePlug do
       random_name = Haikunator.build(0, " ")
 
       conn
-      |> put_resp_cookie("user_name", random_name, max_age: 24*60*60)
+      |> put_resp_cookie("user_name", random_name, max_age: 24 * 60 * 60)
     end
   end
 end
