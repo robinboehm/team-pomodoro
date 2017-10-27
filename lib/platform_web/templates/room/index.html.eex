@@ -16,7 +16,7 @@ Hallo <%= @conn.cookies["user_name"] %> (<%= link "Change name", to: user_path(@
 <%= for room <- @rooms do %>
     <tr>
       <td><%= link room.name, to: room_path(@conn, :show, room) %></td>
-      <td data-show-users-in-room="room:<%= room.uuid %>"><%= Map.keys Platform.Presence.list("room:#{room.uuid}") %></td>
+      <td data-show-users-in-room="room:<%= room.uuid %>"><%= Platform.Presence.list("room:#{room.uuid}") |> Map.keys |> Enum.join(", ") %></td>
     </tr>
 <% end %>
   </tbody>
