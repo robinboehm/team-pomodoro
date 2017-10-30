@@ -1,21 +1,24 @@
 <!-- Metadata for JS ATM via this element-data -->
 <div data-room-uuid="<%= @room.uuid %>"></div>
 
-<div class="position-absolute-fullscreen background-image-fullscreen" style="background-image: url(<%= static_path(@conn, "/images/rooms/#{@room.image}
-  ") %>);">
+<div class="position-absolute-fullscreen background-image-fullscreen"
+style="background-image: url(<%= static_path(@conn, "/images/rooms/#{@room.image} ") %>);">
 
 </div>
 <div class="position-absolute-fullscreen text-white">
   <div class="d-flex flex-column h-100">
-      <div class="w-100 d-flex">
-            <span class="h1 p-2 bg-light">
-              <%= link "≣", to: room_path(@conn, :index) %>
-            </span>
-            <span class="h1 mx-auto">
-                <%= @room.name %>
-            </span>
+    <div class="room-header">
+      <div class="d-flex">
+        <span class="h1 p-2 bg-light">
+          <%= link "≣", to: room_path(@conn, :index) %>
+        </span>
+        <span class="h1 mx-auto">
+          <%= @room.name %>
+        </span>
       </div>
-      <div class="d-flex flex-column m-auto">
+    </div>
+    <div class="room-center m-auto">
+      <div class="d-flex flex-column">
         <!-- <div class="mode-buttons">
             <button id="set-counter-to-pomodoro">Pomodoro</button>
             <button id="set-counter-to-short-break">Short Break</button>
@@ -27,14 +30,17 @@
           </div>
         </div>
         <div class="buttons pt-3">
-            <button class="btn btn-success" id="start-counter">Start</button>
-            <button class="btn btn-danger" id="stop-counter">Stop</button>
-            <button class="btn btn-secondary" id="reset-counter">Reset</button>
+          <button class="btn btn-success" id="start-counter">Start</button>
+          <button class="btn btn-danger" id="stop-counter">Stop</button>
+          <button class="btn btn-secondary" id="reset-counter">Reset</button>
         </div>
       </div>
+    </div>
+    <div class="room-footer">
       <div class="text-white p-3 bg-info">
         Current users in this room:
         <span id="presence_users"></span>
       </div>
+    </div>
   </div>
 </div>
