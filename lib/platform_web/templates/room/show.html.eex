@@ -9,10 +9,7 @@ style="background-image: url(<%= static_path(@conn, "/images/rooms/#{@room.image
   <div class="d-flex flex-column h-100">
     <div class="room-header">
       <div class="d-flex">
-        <span class="h1 p-2 bg-light">
-          <%= link "≣", to: room_path(@conn, :index) %>
-        </span>
-        <span class="h1 mx-auto">
+        <span class="h1 pt-5 mx-auto">
           <%= @room.name %>
         </span>
       </div>
@@ -24,6 +21,11 @@ style="background-image: url(<%= static_path(@conn, "/images/rooms/#{@room.image
             <button id="set-counter-to-short-break">Short Break</button>
             <button id="set-counter-to-long-break">Long Break</button>
         </div> -->
+        <div class="d-flex">
+          <span class="m-auto text-light h1">
+            <%= link "≣", to: room_path(@conn, :index), class: "text-light" %>
+          </span>
+        </div>
         <div class="m-auto">
           <div class="d-flex rounded-circle rounded-circle-200px bg-dark">
             <span id="counter" class="m-auto h1"></span>
