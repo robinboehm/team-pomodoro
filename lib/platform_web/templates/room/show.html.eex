@@ -21,8 +21,10 @@
             <button id="set-counter-to-short-break">Short Break</button>
             <button id="set-counter-to-long-break">Long Break</button>
         </div> -->
-        <div class="centered-circle d-flex m-auto">
-          <span id="counter" class="m-auto"></span>
+        <div class="m-auto">
+          <div class="d-flex rounded-circle rounded-circle-200px bg-dark">
+            <span id="counter" class="m-auto"></span>
+          </div>
         </div>
         <div class="buttons pt-3">
             <button class="btn btn-success" id="start-counter">Start</button>
