@@ -65,7 +65,7 @@ function joinChannel(roomUuid) {
 
 function createCounterEvents(channel) {
   channel.on("counter", ({value: value}) => {
-    $("#counter").text(value);
+    $("#counter").text(convertSecondsToPrettyTime(value));
   })
 
   $("#start-counter").on("click", (event) => {
@@ -79,6 +79,19 @@ function createCounterEvents(channel) {
   $("#reset-counter").on("click", (event) => {
     channel.push("reset");
   });
+}
+
+function convertSecondsToPrettyTime(time) {
+  function str_pad_left(string) {
+    let pad = '0';
+    let length = 2;
+    return (new Array(length+1).join(pad)+string).slice(-length);
+  }
+
+  let minutes = str_pad_left(Math.floor(time / 60))
+  let seconds = str_pad_left(time - minutes * 60)
+
+  return `${minutes}:${seconds}`
 }
 
 
