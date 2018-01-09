@@ -19,7 +19,7 @@ defmodule PlatformWeb.RoomChannel do
     {:ok, assign(socket, :room_id, room_id)}
   end
 
-  def terminate(msg, socket) do
+  def terminate(_msg, socket) do
     Presence.untrack(socket, socket.assigns.name)
     socket |> update_state_in_lobby
   end
@@ -74,21 +74,21 @@ defmodule PlatformWeb.RoomChannel do
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (room:lobby).
-  def handle_in("start", payload, socket) do
+  def handle_in("start", _payload, socket) do
     # broadcast socket, "shout", payload
     timer = TimerRegistry.create_or_get(socket.assigns.room_id)
     Timer.start(timer)
     {:noreply, socket}
   end
 
-  def handle_in("stop", payload, socket) do
+  def handle_in("stop", _payload, socket) do
     # broadcast socket, "shout", payload
     timer = TimerRegistry.create_or_get(socket.assigns.room_id)
     Timer.stop(timer)
     {:noreply, socket}
   end
 
-  def handle_in("reset", payload, socket) do
+  def handle_in("reset", _payload, socket) do
     # broadcast socket, "shout", payload
     timer = TimerRegistry.create_or_get(socket.assigns.room_id)
     Timer.reset(timer)

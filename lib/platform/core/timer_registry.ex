@@ -11,7 +11,7 @@ defmodule Platform.Core.TimerRegistry do
   @doc """
   Starts the registry.
   """
-  def start_link(opts) do
+  def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, [name: __MODULE__])
   end
 
