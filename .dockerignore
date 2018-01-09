@@ -1,5 +1,5 @@
 .git
-.DS_Store
+**/.DS_Store
 .gitignore
 README.md
 .vscode
@@ -7,6 +7,6 @@ _build
 deps
 assets/node_modules
 test
-priv/static/content
+priv/static
 Dockerfile
 docker-compose.yml
