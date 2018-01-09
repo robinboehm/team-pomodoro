@@ -1,0 +1,32 @@
+steps:
+# Load images for cachig
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/team-pomodoro:latest' ]
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/team-pomodoro-test-runner:latest' ]
+# Build test-runner image
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '--build-arg', 'MIX_ENV=test',
+    '--cache-from', 'eu.gcr.io/$PROJECT_ID/team-pomodoro-test-runner:latest',
+    '-t', 'eu.gcr.io/$PROJECT_ID/team-pomodoro-test-runner:latest',
+    '.' ]
+# Run Tests with test-runner
+# - name: 'docker/compose:1.18.0'
+#   args: [ 'run', 'test' ]
+# Build production image
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '--cache-from', 'eu.gcr.io/$PROJECT_ID/team-pomodoro:latest',
+    '-t', 'eu.gcr.io/$PROJECT_ID/team-pomodoro:latest',
+    '-t', 'eu.gcr.io/$PROJECT_ID/team-pomodoro:prod',
+    '.' ]
+# publish following images
+images:
+- 'eu.gcr.io/$PROJECT_ID/team-pomodoro:latest'
+- 'eu.gcr.io/$PROJECT_ID/team-pomodoro:prod'
+- 'eu.gcr.io/$PROJECT_ID/team-pomodoro-test-runner:latest'
+# Timeout 20min (Default 10min)
+timeout: 1200s
