@@ -18,7 +18,14 @@ steps:
     'run',
     '-e', 'MIX_ENV=test',
     'eu.gcr.io/$PROJECT_ID/team-pomodoro-test-runner:latest',
-    'mix', 'coveralls' ]
+    'mix', 'test' ]
+# Run Tests with test-runner
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'run',
+    '-e', 'MIX_ENV=test',
+    'eu.gcr.io/$PROJECT_ID/team-pomodoro-test-runner:latest',
+    'mix', 'credo' ]
 # Build production image
 - name: 'gcr.io/cloud-builders/docker'
   args: [
