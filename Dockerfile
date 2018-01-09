@@ -40,10 +40,11 @@ EXPOSE 4000
 ENV PORT=4000 MIX_ENV=prod
 
 # Install deps
-COPY ./assets/package.json ./assets/package.json
-RUN cd assets && npm install
+# Install do mix first -> phoenix is imported by package.json
 COPY mix.exs mix.lock ./
 RUN mix do deps.get, deps.compile
+COPY ./assets/package.json ./assets/package.json
+RUN cd assets && npm install
 
 ADD . .
 
