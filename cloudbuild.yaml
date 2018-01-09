@@ -1,9 +1,9 @@
 steps:
 # Load images for cachig
-# - name: 'gcr.io/cloud-builders/docker'
-#   args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/team-pomodoro:latest' ]
-# - name: 'gcr.io/cloud-builders/docker'
-#   args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/team-pomodoro-test-runner:latest' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/team-pomodoro:latest' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/team-pomodoro-test-runner:latest' ]
 # Build test-runner image
 - name: 'gcr.io/cloud-builders/docker'
   args: [
@@ -13,8 +13,12 @@ steps:
     '-t', 'eu.gcr.io/$PROJECT_ID/team-pomodoro-test-runner:latest',
     '.' ]
 # Run Tests with test-runner
-# - name: 'docker/compose:1.18.0'
-#   args: [ 'run', 'test' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'run',
+    '-e', 'MIX_ENV=test',
+    'eu.gcr.io/$PROJECT_ID/team-pomodoro-test-runner:latest',
+    'mix', 'coveralls' ]
 # Build production image
 - name: 'gcr.io/cloud-builders/docker'
   args: [
