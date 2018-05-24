@@ -14,8 +14,14 @@ defmodule PlatformWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :basic_auth do
+    if Mix.env == :prod do
+      plug PlatformWeb.BasicAuthPlug, username: "timer", password: "timer"
+    end
+  end
+
   scope "/", PlatformWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :basic_auth] # Use the default browser stack
 
     get "/", PageController, :index
 
