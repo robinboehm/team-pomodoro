@@ -1,4 +1,7 @@
-defmodule PlatformWeb.BasicAuthPlug do
+  defmodule PlatformWeb.BasicAuthPlug do
+  @moduledoc """
+    Basic Auth Plug
+  """
   import Plug.Conn
   @realm "Basic realm=\"My Admin\""
 
